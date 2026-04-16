@@ -1,3 +1,3 @@
-```shell
-pip install ffmpeg-python
+```
+sudo apt install ffmpeg
 ```
