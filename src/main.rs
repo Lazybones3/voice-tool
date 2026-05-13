@@ -2,9 +2,13 @@ use std::{path::{Path, PathBuf}, process::Command};
 use clap::Parser;
 use walkdir::WalkDir;
 
-fn video_to_audio(input_file: &Path) {
+fn video_to_audio(input_file: &Path, output_opt: Option<PathBuf>) {
     let mut output_file = input_file.to_path_buf();
     output_file.set_extension("mp3");
+
+    if let Some(output_dir) = output_opt {
+        output_file = output_dir.join(output_file.file_name().unwrap());
+    }
 
     let command = Command::new("ffmpeg")
         .arg("-i")
@@ -23,8 +27,9 @@ fn video_to_audio(input_file: &Path) {
 
 #[derive(Parser)]
 struct Cli {
-    #[arg(short, long, value_name = "DIR")]
     directory: PathBuf,
+    #[arg(short, long, value_name = "OUTPUT DIRECTORY")]
+    output: Option<PathBuf>,
 }
 
 fn main() {
@@ -36,7 +41,7 @@ fn main() {
             if path.is_file() {
                 if path.extension().map_or(false, |ext| ext == "mp4") {
                     println!("Convert Video: {}", path.display());
-                    video_to_audio(path);
+                    video_to_audio(path, args.output.clone());
                 }
             }
         }
