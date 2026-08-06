@@ -73,7 +73,7 @@ def save_audio(audio_chunks: List[npt.NDArray], sampling_rate: int, output_filen
 
 
 if __name__ == '__main__':
-    sentence_list = load_file("demo.md")
+    sentence_list = load_file("demo.txt")
     audio_chunks, sampling_rate = generate_voice(sentence_list)
     if sampling_rate:
         save_audio(audio_chunks, sampling_rate)

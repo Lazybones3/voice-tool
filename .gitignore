@@ -210,6 +210,6 @@ __marimo__/
 .vscode/
 out/
 *.mp3
+*.wav
 *.lrc
-demo.md
-output_voice_clone.wav
+*.txt
