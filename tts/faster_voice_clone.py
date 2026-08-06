@@ -1,3 +1,4 @@
+import argparse
 import re
 from typing import List, Tuple
 import soundfile as sf
@@ -65,15 +66,29 @@ def generate_voice(sentences: List[str]) -> Tuple[List[npt.NDArray], int | None]
     return audio_chunks, sampling_rate
 
 
-def save_audio(audio_chunks: List[npt.NDArray], sampling_rate: int, output_filename: str = "output_voice_clone.wav"):
+def save_audio(audio_chunks: List[npt.NDArray], sampling_rate: int, output_filename: str):
     final_audio = np.concatenate(audio_chunks, axis=0)
 
     sf.write(output_filename, final_audio, sampling_rate)
     print(f"Successfully saved consolidated audio to: {output_filename}")
 
 
-if __name__ == '__main__':
-    sentence_list = load_file("demo.txt")
+def main():
+    parser = argparse.ArgumentParser(prog='faster-qwen3-tts')
+    parser.add_argument('filename')
+    parser.add_argument(
+        '--output',
+        type=str,
+        default="output_voice_clone.mp3",
+        help="Specify the output filename (default: output_voice_clone.mp3)"
+    )
+
+    args = parser.parse_args()
+    sentence_list = load_file(args.filename)
     audio_chunks, sampling_rate = generate_voice(sentence_list)
     if sampling_rate:
-        save_audio(audio_chunks, sampling_rate)
+        save_audio(audio_chunks, sampling_rate, args.output)
+
+
+if __name__ == '__main__':
+    main()
