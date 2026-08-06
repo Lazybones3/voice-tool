@@ -211,5 +211,5 @@ __marimo__/
 out/
 *.mp3
 *.lrc
-
-target/
+demo.md
+output_voice_clone.wav
